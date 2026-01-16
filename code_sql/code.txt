@@ -1,0 +1,44 @@
+CREATE TABLE guests (
+                        guest_id VARCHAR(50) PRIMARY KEY,
+                        full_name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE rooms (
+                       room_number INT PRIMARY KEY,
+                       price_per_night DECIMAL(10, 2) NOT NULL,
+                       room_type VARCHAR(20) NOT NULL,
+                       has_view BOOLEAN DEFAULT FALSE,
+                       has_jacuzzi BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE bookings (
+                          booking_id SERIAL PRIMARY KEY,
+                          room_number INT NOT NULL,
+                          guest_id VARCHAR(50) NOT NULL,
+                          nights INT NOT NULL,
+                          total_cost DECIMAL(10, 2),
+                          CONSTRAINT fk_room FOREIGN KEY (room_number) REFERENCES rooms(room_number),
+                          CONSTRAINT fk_guest FOREIGN KEY (guest_id) REFERENCES guests(guest_id)
+);
+
+INSERT INTO guests (guest_id, full_name) VALUES
+                                             ('ID-001', 'John Doe'),
+                                             ('ID-002', 'Alice Smith');
+
+INSERT INTO rooms (room_number, price_per_night, room_type, has_view, has_jacuzzi)
+VALUES (101, 100.00, 'Standard', FALSE, NULL);
+
+INSERT INTO rooms (room_number, price_per_night, room_type, has_view, has_jacuzzi)
+VALUES (202, 200.00, 'Suite', NULL, TRUE);
+
+INSERT INTO rooms (room_number, price_per_night, room_type, has_view, has_jacuzzi)
+VALUES (303, 150.00, 'Standard', TRUE, NULL);
+
+
+SELECT * FROM guests;
+
+
+UPDATE rooms SET price_per_night = 120.00 WHERE room_number = 101;
+
+
+DELETE FROM guests WHERE guest_id = 'ID-002';
